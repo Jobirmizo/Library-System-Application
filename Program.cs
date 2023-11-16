@@ -1,6 +1,5 @@
-global using Library_System_Application.Model;
 global using Microsoft.EntityFrameworkCore;
-global using Microsoft.Extensions.Configuration;
+global using Library_System_Application.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +9,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<BookContext>();
+builder.Services.AddDbContext<LibrarySystemContext>();
+
+
 
 
 var app = builder.Build();

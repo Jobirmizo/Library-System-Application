@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library_System_Application.Model;
 
-public partial class BookContext : DbContext
+public partial class LibrarySystemContext : DbContext
 {
-    public BookContext()
+    public LibrarySystemContext()
     {
     }
 
-    public BookContext(DbContextOptions<BookContext> options)
+    public LibrarySystemContext(DbContextOptions<LibrarySystemContext> options)
         : base(options)
     {
     }
@@ -33,12 +33,12 @@ public partial class BookContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=TRAVIS\\SQLExpress;Database=LibrarySystem;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=TRAVIS\\SQLEXPRESS;Database=LibrarySystem;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Author>(entity =>
-        {   
+        {
             entity.HasKey(e => e.Id).HasName("PK__author__3214EC27EA465A5E");
 
             entity.ToTable("author");
@@ -70,7 +70,6 @@ public partial class BookContext : DbContext
             entity.Property(e => e.PublicationYear)
                 .HasMaxLength(4)
                 .IsUnicode(false)
-                .IsFixedLength()
                 .HasColumnName("publication_year");
             entity.Property(e => e.Title)
                 .HasMaxLength(255)
@@ -109,13 +108,7 @@ public partial class BookContext : DbContext
 
             entity.ToTable("category");
 
-            entity.HasIndex(e => e.Category1, "UQ__category__F7F53CC20EECFF76").IsUnique();
-
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Category1)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("category");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .IsUnicode(false)

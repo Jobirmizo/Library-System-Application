@@ -7,15 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Library_System_Application.Model;
 
-namespace Library_System_Application.Controllers
+namespace Library_System_Application
 {
     [Route("api/[controller]")]
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly BookContext _context;
+        private readonly LibrarySystemContext _context;
 
-        public BookController(BookContext context)
+        public BookController(LibrarySystemContext context)
         {
             _context = context;
         }
@@ -26,7 +26,7 @@ namespace Library_System_Application.Controllers
         {
           if (_context.Books == null)
           {
-              return NotFound("There is no such kinda book");
+              return NotFound();
           }
             return await _context.Books.ToListAsync();
         }
@@ -43,7 +43,7 @@ namespace Library_System_Application.Controllers
 
             if (book == null)
             {
-                return NotFound("There is no such kinda book");
+                return NotFound();
             }
 
             return book;
@@ -87,7 +87,7 @@ namespace Library_System_Application.Controllers
         {
           if (_context.Books == null)
           {
-              return Problem("Entity set 'BookContext.Books'  is null.");
+              return Problem("Entity set 'LibrarySystemContext.Books'  is null.");
           }
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
