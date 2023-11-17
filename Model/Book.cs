@@ -15,8 +15,10 @@ public partial class Book
     public string Language { get; set; } = null!;
 
     public int CategoryId { get; set; }
+    
+    public int CopiesOwned { get; set; }    
 
-    public int CopiesOwned { get; set; }
+    public int? Count { get; set; }
     [JsonIgnore]
     public virtual Category? Category { get; set; } = null!;
     [JsonIgnore]

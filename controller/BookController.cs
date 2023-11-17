@@ -14,24 +14,19 @@ namespace Library_System_Application
     public class BookController : ControllerBase
     {
         private readonly LibrarySystemContext _context;
-
         public BookController(LibrarySystemContext context)
         {
             _context = context;
         }
 
-        // GET: api/Book
+       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
-          if (_context.Books == null)
-          {
-              return NotFound();
-          }
             return await _context.Books.ToListAsync();
         }
 
-        // GET: api/Book/5
+       
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
@@ -49,8 +44,7 @@ namespace Library_System_Application
             return book;
         }
 
-        // PUT: api/Book/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
@@ -58,9 +52,7 @@ namespace Library_System_Application
             {
                 return BadRequest();
             }
-
             _context.Entry(book).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -76,12 +68,9 @@ namespace Library_System_Application
                     throw;
                 }
             }
-
             return NoContent();
         }
 
-        // POST: api/Book
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
@@ -95,7 +84,7 @@ namespace Library_System_Application
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }
 
-        // DELETE: api/Book/5
+    
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {

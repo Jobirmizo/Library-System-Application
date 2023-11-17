@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<LibrarySystemContext>();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 
 
@@ -24,6 +25,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(policyBuilder =>
+    policyBuilder.AllowAnyMethod().AllowCredentials().SetIsOriginAllowed(host => true).AllowAnyHeader());
 
 app.UseAuthorization();
 
