@@ -19,8 +19,6 @@ public partial class LibrarySystemContext : DbContext
 
     public virtual DbSet<Book> Books { get; set; }
 
-    public virtual DbSet<BookAuthor> BookAuthors { get; set; }
-
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Loan> Loans { get; set; }
@@ -39,19 +37,19 @@ public partial class LibrarySystemContext : DbContext
     {
         modelBuilder.Entity<Author>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__author__3214EC27EA465A5E");
+            entity.HasKey(e => e.Id).HasName("PK__author__3214EC279784D0A9");
 
             entity.ToTable("author");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(1)
+            entity.Property(e => e.Name)
+                .HasMaxLength(55)
                 .IsUnicode(false)
-                .HasColumnName("first_name");
-            entity.Property(e => e.LastName)
-                .HasMaxLength(1)
+                .HasColumnName("name");
+            entity.Property(e => e.Surname)
+                .HasMaxLength(55)
                 .IsUnicode(false)
-                .HasColumnName("last_name");
+                .HasColumnName("surname");
         });
 
         modelBuilder.Entity<Book>(entity =>
@@ -61,8 +59,13 @@ public partial class LibrarySystemContext : DbContext
             entity.ToTable("books");
 
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.AuthorId).HasColumnName("authorID");
             entity.Property(e => e.CategoryId).HasColumnName("categoryID");
             entity.Property(e => e.CopiesOwned).HasColumnName("copies_owned");
+            entity.Property(e => e.Count).HasColumnName("count");
+            entity.Property(e => e.Image)
+                .HasColumnType("image")
+                .HasColumnName("image");
             entity.Property(e => e.Language)
                 .HasMaxLength(55)
                 .IsUnicode(false)
@@ -76,30 +79,14 @@ public partial class LibrarySystemContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("title");
 
+            entity.HasOne(d => d.Author).WithMany(p => p.Books)
+                .HasForeignKey(d => d.AuthorId)
+                .HasConstraintName("FK_books_author");
+
             entity.HasOne(d => d.Category).WithMany(p => p.Books)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__books__categoryI__5BE2A6F2");
-        });
-
-        modelBuilder.Entity<BookAuthor>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("book_author");
-
-            entity.Property(e => e.Auithotr).HasColumnName("auithotr");
-            entity.Property(e => e.BooksId).HasColumnName("booksID");
-
-            entity.HasOne(d => d.AuithotrNavigation).WithMany()
-                .HasForeignKey(d => d.Auithotr)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__book_auth__auith__619B8048");
-
-            entity.HasOne(d => d.Books).WithMany()
-                .HasForeignKey(d => d.BooksId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__book_auth__books__60A75C0F");
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -189,7 +176,7 @@ public partial class LibrarySystemContext : DbContext
 
             entity.ToTable("student");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -217,6 +204,10 @@ public partial class LibrarySystemContext : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("phone");
+            entity.Property(e => e.Role)
+                .HasMaxLength(55)
+                .IsUnicode(false)
+                .HasColumnName("role");
         });
 
         OnModelCreatingPartial(modelBuilder);

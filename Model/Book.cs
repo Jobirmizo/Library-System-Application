@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace Library_System_Application.Model;
 
@@ -15,12 +14,18 @@ public partial class Book
     public string Language { get; set; } = null!;
 
     public int CategoryId { get; set; }
-    
-    public int CopiesOwned { get; set; }    
+
+    public int CopiesOwned { get; set; }
 
     public int? Count { get; set; }
-    [JsonIgnore]
-    public virtual Category? Category { get; set; } = null!;
-    [JsonIgnore]
+
+    public byte[]? Image { get; set; }
+
+    public int? AuthorId { get; set; }
+
+    public virtual Author? Author { get; set; }
+
+    public virtual Category Category { get; set; } = null!;
+
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

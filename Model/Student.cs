@@ -19,6 +19,8 @@ public partial class Student
 
     public string Passport { get; set; } = null!;
 
+    public string? Role { get; set; }
+
     public virtual ICollection<Loan> LoanBooks { get; set; } = new List<Loan>();
 
     public virtual ICollection<Loan> LoanStudents { get; set; } = new List<Loan>();

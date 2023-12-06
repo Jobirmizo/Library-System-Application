@@ -7,26 +7,33 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Library_System_Application.Model;
 
-namespace Library_System_Application
+namespace Library_System_Application.controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookController : ControllerBase
+    public class BookCoontroller : ControllerBase
     {
+       
         private readonly LibrarySystemContext _context;
-        public BookController(LibrarySystemContext context)
+
+        public BookCoontroller(LibrarySystemContext context)
         {
             _context = context;
+        
         }
 
-       
+        // GET: api/BookCoontroller
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
+          if (_context.Books == null)
+          {
+              return NotFound();
+          }
             return await _context.Books.ToListAsync();
         }
 
-       
+        // GET: api/BookCoontroller/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
@@ -44,7 +51,8 @@ namespace Library_System_Application
             return book;
         }
 
-    
+        // PUT: api/BookCoontroller/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
@@ -52,7 +60,9 @@ namespace Library_System_Application
             {
                 return BadRequest();
             }
+
             _context.Entry(book).State = EntityState.Modified;
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -68,23 +78,26 @@ namespace Library_System_Application
                     throw;
                 }
             }
+
             return NoContent();
         }
-
+        
         [HttpPost]
+        [Consumes("multipart/form-data")]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
-          if (_context.Books == null)
-          {
-              return Problem("Entity set 'LibrarySystemContext.Books'  is null.");
-          }
+            if (_context.Books == null)
+            {
+                return Problem("Entity set 'LibrarySystemContext.Books'  is null.");
+            }
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }
+        
 
-    
+        // DELETE: api/BookCoontroller/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
