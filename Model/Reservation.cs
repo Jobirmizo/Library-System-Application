@@ -13,5 +13,5 @@ public partial class Reservation
 
     public virtual Book Books { get; set; } = null!;
 
-    public virtual Student Student { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

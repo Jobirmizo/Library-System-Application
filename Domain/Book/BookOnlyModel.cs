@@ -11,7 +11,7 @@ public class BookOnlyModel
 
     public string Language { get; set; } = null!;
     
-    public int? Count { get; set; }
+    public int Count { get; set; }
     public int? AuthorId { get; set; }
     
     public int CategoryId { get; set; }

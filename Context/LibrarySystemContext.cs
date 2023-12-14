@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Library_System_Application.Domain.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library_System_Application.Model;
@@ -14,9 +15,8 @@ public partial class LibrarySystemContext : DbContext
         : base(options)
     {
     }
-
+    
     public virtual DbSet<Author> Authors { get; set; }
-
     public virtual DbSet<Book> Books { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -27,7 +27,7 @@ public partial class LibrarySystemContext : DbContext
 
     public virtual DbSet<Reservation> Reservations { get; set; }
 
-    public virtual DbSet<Student> Students { get; set; }
+    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -123,7 +123,7 @@ public partial class LibrarySystemContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__loan__bookID__72C60C4A");
 
-            entity.HasOne(d => d.Student).WithMany(p => p.LoanStudents)
+            entity.HasOne(d => d.User).WithMany(p => p.LoanStudents)
                 .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__loan__studentID__71D1E811");
@@ -164,13 +164,13 @@ public partial class LibrarySystemContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__reservati__books__6E01572D");
 
-            entity.HasOne(d => d.Student).WithMany(p => p.Reservations)
+            entity.HasOne(d => d.User).WithMany(p => p.Reservations)
                 .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__reservati__stude__6EF57B66");
         });
 
-        modelBuilder.Entity<Student>(entity =>
+        modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__student__3214EC272B6D402A");
 

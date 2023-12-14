@@ -1,5 +1,7 @@
 using System.Configuration;
 using System.Text;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,13 +12,11 @@ namespace Library_System_Application;
 
 public class Startup
 {
-    public IConfiguration Configuration { get; }
-
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
     }
-    
+    public IConfiguration Configuration { get; }
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
@@ -30,7 +30,7 @@ public class Startup
         services.AddMvc();
         services.AddControllers();
         
-       
+        
     }
     
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -46,7 +46,12 @@ public class Startup
           
         }
 
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        app.UseRouting();
         app.UseAuthentication();
+        app.UseAuthorization();
+            
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

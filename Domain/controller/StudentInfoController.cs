@@ -11,57 +11,55 @@ namespace Library_System_Application.controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookCoontroller : ControllerBase
+    public class StudentInfoController : ControllerBase
     {
-       
         private readonly LibrarySystemContext _context;
 
-        public BookCoontroller(LibrarySystemContext context)
+        public StudentInfoController(LibrarySystemContext context)
         {
             _context = context;
+        }
+
         
-        }
-
-        // GET: api/BookCoontroller
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<User>>> GetStudents()
         {
-          if (_context.Books == null)
+          if (_context.Users == null)
           {
               return NotFound();
           }
-            return await _context.Books.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
-        // GET: api/BookCoontroller/5
+        // GET: api/StudentInfo/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        public async Task<ActionResult<User>> GetStudent(int id)
         {
-          if (_context.Books == null)
+          if (_context.Users == null)
           {
               return NotFound();
           }
-            var book = await _context.Books.FindAsync(id);
+            var student = await _context.Users.FindAsync(id);
 
-            if (book == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return book;
+            return student;
         }
 
-        // PUT: api/BookCoontroller/5
+        // PUT: api/StudentInfo/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook(int id, Book book)
+        public async Task<IActionResult> PutStudent(int id, User user)
         {
-            if (id != book.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(book).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +67,7 @@ namespace Library_System_Application.controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BookExists(id))
+                if (!StudentExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +79,45 @@ namespace Library_System_Application.controller
 
             return NoContent();
         }
-        
+
+        // POST: api/StudentInfo
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Consumes("multipart/form-data")]
-        public async Task<ActionResult<Book>> PostBook(Book book)
+        public async Task<ActionResult<User>> PostStudent(User user)
         {
-            if (_context.Books == null)
-            {
-                return Problem("Entity set 'LibrarySystemContext.Books'  is null.");
-            }
-            _context.Books.Add(book);
+          if (_context.Users == null)
+          {
+              return Problem("Entity set 'LibrarySystemContext.Students'  is null.");
+          }
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            return CreatedAtAction("GetStudent", new { id = user.Id }, user);
         }
-        
 
-        // DELETE: api/BookCoontroller/5
+        // DELETE: api/StudentInfo/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBook(int id)
+        public async Task<IActionResult> DeleteStudent(int id)
         {
-            if (_context.Books == null)
+            if (_context.Users == null)
             {
                 return NotFound();
             }
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
+            var student = await _context.Users.FindAsync(id);
+            if (student == null)
             {
                 return NotFound();
             }
 
-            _context.Books.Remove(book);
+            _context.Users.Remove(student);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool BookExists(int id)
+        private bool StudentExists(int id)
         {
-            return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -15,7 +15,7 @@ public partial class Loan
 
     public DateTime? ReturnDate { get; set; }
 
-    public virtual Student Book { get; set; } = null!;
+    public virtual User Book { get; set; } = null!;
 
-    public virtual Student Student { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

@@ -5,6 +5,7 @@ using ApiWithAuth;
 using AutoMapper;
 using Library_System_Application;
 using Library_System_Application.Model;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -12,8 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-
-
+using Microsoft.OpenApi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,14 +24,46 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddControllers();
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Description = "admin authentication with JWT Token",
+        Type = SecuritySchemeType.Http
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                  Reference = new OpenApiReference
+                  {
+                      Id = "Bearer",
+                      Type = ReferenceType.SecurityScheme
+                  }
+            },
+            new List<string>()
+        }
+    });
+});
+
+
 builder.Services.AddDbContext<LibrarySystemContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Server=TRAVIS\\SQLEXPRESS;Database=LibrarySystem;Trusted_Connection=True;TrustServerCertificate=True;"));
 });
 
 
+
+
+
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -40,18 +72,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = configuration["Jwt:Issuer"],
-            ValidAudience = configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 
+
+
+
+
 builder.Services.AddDbContext<LibrarySystemContext>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddMvc();
 builder.Services.AddControllers();
-
-
 
 
 builder.Services.AddMvc(options =>
@@ -86,6 +122,7 @@ app.UseCors(policyBuilder =>
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 
