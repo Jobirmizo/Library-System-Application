@@ -16,15 +16,5 @@ public class OrderBookController : Controller
         _mapper = mapper;
         _context = context;
     }
-    // [HttpGet]
-    // public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
-    // {
-    //     
-    //
-    //     if (_context.Books == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //     return await _context.Books.ToListAsync();
-    // }
+   
 }

@@ -52,17 +52,17 @@ namespace Library_System_Application.Domain.User
         }
         
         
-        private string Generate(Model.User user)
+        private string Generate(Model.Student student)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.IdCard),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.GivenName, user.FirstName ),
-                new Claim(ClaimTypes.Surname, user.LastName),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.NameIdentifier, student.IdCard),
+                new Claim(ClaimTypes.Email, student.Email),
+                new Claim(ClaimTypes.GivenName, student.FirstName ),
+                new Claim(ClaimTypes.Surname, student.LastName),
+                new Claim(ClaimTypes.Role, student.Role)
             };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
@@ -75,7 +75,7 @@ namespace Library_System_Application.Domain.User
         }
      
 
-        private Model.User? Authenticate(UserLoginDto userLoginDto)
+        private Model.Student? Authenticate(UserLoginDto userLoginDto)
         {
             var currentStudent = _context.Users.FirstOrDefault(o => String.Equals(o.Email.ToLower(), userLoginDto.Email.ToLower()) 
                                                                        && o.Passport == userLoginDto.Passport);

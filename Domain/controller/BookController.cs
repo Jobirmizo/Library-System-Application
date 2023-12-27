@@ -17,43 +17,41 @@ using NuGet.Common;
 using LibrarySystemContext = Library_System_Application.Model.LibrarySystemContext;
 
 namespace Library_System_Application.controller
-{       
+{
     [Route("api/[controller]")]
     [ApiController]
     public class BookController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly LibrarySystemContext _context;
+
         public BookController(LibrarySystemContext context, IMapper mapper)
         {
-             _mapper = mapper;
-             _context = context;
+            _mapper = mapper;
+            _context = context;
         }
-        
-        
 
-        
+
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
-        { 
-          if (_context.Books == null)
-          {
-              return NotFound();
-          }
-          
+        {
+            if (_context.Books == null)
+            {
+                return NotFound();
+            }
+
             return await _context.Books.ToListAsync();
-            
         }
 
-      
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
-          if (_context.Books == null)
-          {
-              return NotFound();
-          }
+            if (_context.Books == null)
+            {
+                return NotFound();
+            }
+
             var book = await _context.Books.FindAsync(id);
 
             if (book == null)
@@ -63,8 +61,8 @@ namespace Library_System_Application.controller
 
             return book;
         }
-        
-        
+
+
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult<Book>> PostBook(Book book)
@@ -73,12 +71,13 @@ namespace Library_System_Application.controller
             {
                 return Problem("Entity set 'LibrarySystemContext.Books'  is null.");
             }
+
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }
-        
+
         [HttpPut("{id}")]
         public IActionResult UpdateBook(int id, [FromBody] EditBookDto book)
         {
@@ -110,7 +109,7 @@ namespace Library_System_Application.controller
 
             return Ok("Book updated successfully");
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
@@ -118,6 +117,7 @@ namespace Library_System_Application.controller
             {
                 return NotFound();
             }
+
             var book = await _context.Books.FindAsync(id);
             if (book == null)
             {

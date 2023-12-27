@@ -3,6 +3,7 @@ using AutoMapper;
 using Library_System_Application.Model;
 using Microsoft.AspNetCore.Mvc;
 using Library_System_Application.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -22,6 +23,7 @@ public class BookOnlyTitleCount : ControllerBase
     }
    
     [HttpPost("add-book")]
+    // [Authorize(Roles = "Manager")]
     public IActionResult AddSingleBook([FromBody] BookOnlyModel book)
     {
         var _book = new Book()
@@ -32,7 +34,7 @@ public class BookOnlyTitleCount : ControllerBase
             CategoryId = book.CategoryId,
             AuthorId = book.AuthorId,
             Count = book.Count,
-        };
+        };  
         _context.Books.Add(_book);
         _context.SaveChanges();
 

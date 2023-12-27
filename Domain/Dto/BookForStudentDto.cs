@@ -3,11 +3,9 @@ using System.Drawing;
 
 namespace Library_System_Application.Domain.Dto;
 
-public class BookForSearchDto
+public class BookForStudentDto
 {
-  
-    public byte[]? Image { get; set; }
-    
-  
-    public int? AuthorId { get; set; }
+    public int BooksId { get; set; }
+
+    public int StudentId { get; set; }
 }

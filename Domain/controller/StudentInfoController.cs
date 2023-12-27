@@ -22,7 +22,7 @@ namespace Library_System_Application.controller
 
         
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
           if (_context.Users == null)
           {
@@ -33,7 +33,7 @@ namespace Library_System_Application.controller
 
         // GET: api/StudentInfo/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetStudent(int id)
+        public async Task<ActionResult<Student>> GetStudent(int id)
         {
           if (_context.Users == null)
           {
@@ -52,14 +52,14 @@ namespace Library_System_Application.controller
         // PUT: api/StudentInfo/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, User user)
+        public async Task<IActionResult> PutStudent(int id, Student student)
         {
-            if (id != user.Id)
+            if (id != student.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(student).State = EntityState.Modified;
 
             try
             {
@@ -83,16 +83,16 @@ namespace Library_System_Application.controller
         // POST: api/StudentInfo
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostStudent(User user)
+        public async Task<ActionResult<Student>> PostStudent(Student student)
         {
           if (_context.Users == null)
           {
               return Problem("Entity set 'LibrarySystemContext.Students'  is null.");
           }
-            _context.Users.Add(user);
+            _context.Users.Add(student);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStudent", new { id = user.Id }, user);
+            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
         }
 
         // DELETE: api/StudentInfo/5

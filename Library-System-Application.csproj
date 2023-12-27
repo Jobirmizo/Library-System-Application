@@ -35,8 +35,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Context\" />
       <Folder Include="Domain\Authentication\" />
-      <Folder Include="Service\" />
+      <Folder Include="Domain\OrderBook\" />
       <Folder Include="Views\" />
     </ItemGroup>
 

@@ -10,8 +10,9 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<EditBookDto, Book>();
         CreateMap<Book, EditBookDto>();
-        CreateMap<BookForSearchDto, Book>();
-        CreateMap<User, StudentInfoDto>();
-        CreateMap<OrderBookDto, Book>();
+        CreateMap<BookForStudentDto, Reservation>();
+        CreateMap<Student, StudentInfoDto>();
+        CreateMap<ReservationDto, Reservation>();
+        CreateMap<Reservation, ReservationDto>();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Library_System_Application.Model;
 
@@ -11,7 +12,11 @@ public partial class Reservation
 
     public int StudentId { get; set; }
 
-    public virtual Book Books { get; set; } = null!;
+    public string BorrowDate { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public string ReturnDate { get; set; }
+
+    [JsonIgnore] public virtual Book Books { get; set; } = null!;
+
+    [JsonIgnore] public virtual Student Student { get; set; } = null!;
 }

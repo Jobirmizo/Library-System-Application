@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Library_System_Application.Model;
 
-public partial class User
+public partial class Student
 {
     public int Id { get; set; }
 
@@ -15,7 +15,7 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public string? IdCard { get; set; } = null!;
+    public string IdCard { get; set; } = null!;
 
     public string Passport { get; set; } = null!;
 
